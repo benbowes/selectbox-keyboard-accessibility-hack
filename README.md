@@ -2,7 +2,7 @@
 
 Hacking away at making a dropdown select-box behave on desktop similarly to the native chrome one.
 
-Using only pure ES5 for laughs.
+Using only pure ES5 (For fun).
 
 <img src="https://media1.giphy.com/media/401CMO1Du5cju/giphy.gif" width="100%" />
 
