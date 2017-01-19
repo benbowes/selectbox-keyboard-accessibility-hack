@@ -19,8 +19,8 @@ var SelectBox = function(element) {
 
   // Bind functions for listeners
   this.handleListBoxOnBlur = this.handleListBoxOnBlur.bind(this);
-  this.handleOptionNodeKeyEvent = this.handleOptionNodeKeyEvent.bind(this);
-  this.handleOptionNodeClick = this.handleOptionNodeClick.bind(this);
+  this.handleOptionKeyEvent = this.handleOptionKeyEvent.bind(this);
+  this.handleOptionClick = this.handleOptionClick.bind(this);
 
   // Initialise
   this.addListeners();
@@ -38,9 +38,9 @@ SelectBox.prototype = {
   },
 
   addListeners: function() {
-    this.domRefs.selectBox.addEventListener('touchstart', this.handleOptionNodeClick, false);
-    this.domRefs.selectBox.addEventListener('mousedown', this.handleOptionNodeClick, false);
-    this.domRefs.selectBox.addEventListener('keydown', this.handleOptionNodeKeyEvent, false);
+    this.domRefs.selectBox.addEventListener('touchstart', this.handleOptionClick, false);
+    this.domRefs.selectBox.addEventListener('mousedown', this.handleOptionClick, false);
+    this.domRefs.selectBox.addEventListener('keydown', this.handleOptionKeyEvent, false);
     this.domRefs.selectBox.addEventListener('blur', this.handleListBoxOnBlur, false);
   },
 
@@ -120,7 +120,7 @@ SelectBox.prototype = {
 
   // HANDLERS
 
-  handleOptionNodeKeyEvent: function(e) {
+  handleOptionKeyEvent: function(e) {
     if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 13) {
       e.preventDefault(); // Disable native functionality
     }
@@ -144,7 +144,7 @@ SelectBox.prototype = {
     }
   },
 
-  handleOptionNodeClick: function(e) {
+  handleOptionClick: function(e) {
     // There are 2 events being fired. mousedown (desktop), touchstart (mobile).
     // Let the 1st cancel the other with `preventDefault`
     e && e.preventDefault();
@@ -167,9 +167,10 @@ SelectBox.prototype = {
 
 }
 
-// Start
+// START
 
 var selectBoxes = document.querySelectorAll('.select-box');
+
 for(var i = 0; i < selectBoxes.length; i++) {
   new SelectBox(selectBoxes[i]);
 }
