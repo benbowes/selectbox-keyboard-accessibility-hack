@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Box</title>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<form>
+
+  <div role="listbox" tabindex="0" class="listbox">
+    <div class="labelContainer">
+      Colour: <span class="label">Any</span>
+      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+    </div>
+    <div class="options">
+      <div role="option" class="option" data-value="null">Any</div>
+      <div role="option" class="option" data-value="green">Green</div>
+      <div role="option" class="option" data-value="orange">Orange</div>
+      <div role="option" class="option" data-value="red">Red</div>
+      <div role="option" class="option" data-value="blue">Blue</div>
+      <div role="option" class="option" data-value="violet">Violet</div>
+      <div role="option" class="option" data-value="periwinkle">Periwinkle</div>
+    </div>
+    <input type="hidden" name="colour" value="null" />
+  </div>
+
+  <div role="listbox" tabindex="0" class="listbox">
+    <div class="labelContainer">
+      Type: <span class="label">Any</span>
+      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+    </div>
+    <div class="options">
+      <div role="option" class="option" data-value="null">Any</div>
+      <div role="option" class="option" data-value="coupe">Coupe</div>
+      <div role="option" class="option" data-value="wagon">Station wagon</div>
+      <div role="option" class="option" data-value="sedan">Sedan</div>
+      <div role="option" class="option" data-value="convertable">Convertable</div>
+      <div role="option" class="option" data-value="SUV">SUV</div>
+    </div>
+    <input type="hidden" name="type" value="null" />
+  </div>
+
+  <div role="listbox" tabindex="0" class="listbox">
+    <div class="labelContainer">
+      Performance: <span class="label">Any</span>
+      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+    </div>
+    <div class="options">
+      <div role="option" class="option" data-value="null">Any</div>
+      <div role="option" class="option" data-value="poor">Poor</div>
+      <div role="option" class="option" data-value="reasonable">Reasonable</div>
+      <div role="option" class="option" data-value="good">Good</div>
+      <div role="option" class="option" data-value="excellent">Excellent</div>
+      <div role="option" class="option" data-value="amazing">Amazing</div>
+    </div>
+    <input type="hidden" name="performance" value="null" />
+  </div>
+
+  <select name="make">
+    <option selected value="null">Any</option>
+    <option value="fiat">Fiat</option>
+    <option value="subaru">Subaru</option>
+    <option value="bmw">BMW</option>
+    <option value="tesla">Tesla</option>
+  </select>
+
+  <button type="submit">Submit</button>
+
+</form>
+
+<br/>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt faucibus felis, sed dapibus erat fermentum ac. Vestibulum non congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star; Lorem ipsum dolor sit amet, consectetur
+adipiscing elit. Maecenas tincidunt faucibus felis, sed dapibus erat fermentum ac. Vestibulum non congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt
+faucibus felis, sed dapibus erat fermentum ac. Vestibulum non congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt faucibus felis, sed dapibus erat
+fermentum ac. Vestibulum non congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt faucibus felis, sed dapibus erat fermentum ac. Vestibulum non
+congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star;</p>
+
+<script src="index.js"></script>
+
+</body>
+</html>
