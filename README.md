@@ -13,13 +13,11 @@ Using only pure ES5 for laughs.
 - / Safari latest
 - / Firefox latest
 - / IE 11 - submits no enter press
--
 
 #### iPhone
 - / iPhone 6+ - iOS 9
--
 
-#### iPAD
+#### iPad
 - / iPad Pro - iOS 10
 - / iPad Air 2 - iOS 9.3
 - / iPad Mini - iOS 7
