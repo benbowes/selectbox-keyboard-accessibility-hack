@@ -18,9 +18,9 @@ var SelectBox = function(element) {
   };
 
   // Bind functions for listeners
-  this.handleListBoxOnBlur = this.handleListBoxOnBlur.bind(this);
-  this.handleOptionKeyEvent = this.handleOptionKeyEvent.bind(this);
-  this.handleOptionClick = this.handleOptionClick.bind(this);
+  this.handleSelectBoxBlur = this.handleSelectBoxBlur.bind(this);
+  this.handleSelectBoxKeyEvent = this.handleSelectBoxKeyEvent.bind(this);
+  this.handleSelectBoxClick = this.handleSelectBoxClick.bind(this);
 
   // Initialise
   this.addListeners();
@@ -38,10 +38,10 @@ SelectBox.prototype = {
   },
 
   addListeners: function() {
-    this.domRefs.selectBox.addEventListener('touchstart', this.handleOptionClick, false);
-    this.domRefs.selectBox.addEventListener('mousedown', this.handleOptionClick, false);
-    this.domRefs.selectBox.addEventListener('keydown', this.handleOptionKeyEvent, false);
-    this.domRefs.selectBox.addEventListener('blur', this.handleListBoxOnBlur, false);
+    this.domRefs.selectBox.addEventListener('touchstart', this.handleSelectBoxClick, false);
+    this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
+    this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
+    this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
   },
 
   updateUI: function() {
@@ -64,7 +64,7 @@ SelectBox.prototype = {
   getInitialSelectedOptionIndex: function() {
     var initialSelectedOption = this.domRefs.selectBox.querySelector('.option.selected');
     return (initialSelectedOption)
-      ? this.getChildIndex(initialSelectedOption)
+      ? this.getOptionIndex(initialSelectedOption)
       : 0;
   },
 
@@ -92,7 +92,7 @@ SelectBox.prototype = {
     }
   },
 
-  getChildIndex: function(element) {
+  getOptionIndex: function(element) {
     // Find index of `child` relative to `parent`
     return Array.prototype.indexOf.call(element.parentNode.children, element);
   },
@@ -120,7 +120,7 @@ SelectBox.prototype = {
 
   // HANDLERS
 
-  handleOptionKeyEvent: function(e) {
+  handleSelectBoxKeyEvent: function(e) {
     if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 13) {
       e.preventDefault(); // Disable native functionality
     }
@@ -144,7 +144,7 @@ SelectBox.prototype = {
     }
   },
 
-  handleOptionClick: function(e) {
+  handleSelectBoxClick: function(e) {
     // There are 2 events being fired. mousedown (desktop), touchstart (mobile).
     // Let the 1st cancel the other with `preventDefault`
     e && e.preventDefault();
@@ -154,14 +154,15 @@ SelectBox.prototype = {
 
     // Clicked on a `.option` if its parent is `.options`
     if (e && e.target.parentNode.classList.contains('options')) {
-      this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getChildIndex(e.target) });
+      this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getOptionIndex(e.target) });
       this.updateUI();
     }
 
+    // Open panel if closed, close panel if open
     this.toggleOptionsPanel();
   },
 
-  handleListBoxOnBlur: function() {
+  handleSelectBoxBlur: function() {
     this.toggleOptionsPanel('close');
   }
 
