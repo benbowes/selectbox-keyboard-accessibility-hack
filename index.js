@@ -102,13 +102,13 @@ SelectBox.prototype = {
         return this.toggleOptionsPanel();
 
       case 40: // Down
-        if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
         this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getNextIndex('increment') });
+        if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
         return this.updateUI();
 
       case 38: // Up
-        if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
         this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getNextIndex('decrement') });
+        if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
         return this.updateUI();
     }
   },
