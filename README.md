@@ -4,8 +4,7 @@ Hacking away at making a dropdown select-box behave on desktop similarly to the 
 
 Using only pure ES5 (For fun).
 
-<img src="https://media1.giphy.com/media/401CMO1Du5cju/giphy.gif" width="100%" />
-
+<img src="https://media1.giphy.com/media/401CMO1Du5cju/giphy.gif" width="40%" /> <img src="https://media1.giphy.com/media/D4aqbOMrQnHxK/giphy.gif" width="30%" />
 ## Device tests
 
 #### Destop browsers
