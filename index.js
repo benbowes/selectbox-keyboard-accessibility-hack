@@ -93,7 +93,7 @@ SelectBox.prototype = {
   },
 
   listItemKeyEvent: function(e) {
-    if (e.keyCode === 40 || e.keyCode === 38) {
+    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 13) {
       e.preventDefault(); // Disable keyboard arrow scroll functionality
     }
 
