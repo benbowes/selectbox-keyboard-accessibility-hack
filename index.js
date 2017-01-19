@@ -22,7 +22,6 @@ var SelectBox = function(element) {
   this.handleSelectBoxKeyEvent = this.handleSelectBoxKeyEvent.bind(this);
   this.handleSelectBoxClick = this.handleSelectBoxClick.bind(this);
 
-  // Initialise
   this.addListeners();
   this.updateUI();
 }
@@ -72,9 +71,9 @@ SelectBox.prototype = {
     switch (mode) {
       case 'increment':
         return (function(_this) {
-          // hold on current item to highlight it
+          // hold selection on current selected option when options panel opens
           if (_this.state.optionsOpen === false) return _this.state.selectedIndex;
-          // At the end of the list
+          // At the end of the list - stop
           if (_this.state.selectedIndex === _this.constants.optionNodesLength - 1) return _this.constants.optionNodesLength - 1;
           // else increment
           return _this.state.selectedIndex + 1;
@@ -82,9 +81,9 @@ SelectBox.prototype = {
 
       case 'decrement':
         return (function(_this) {
-          // hold on current item to highlight it
+          // hold selection on current selected option when options panel opens
           if (_this.state.optionsOpen === false) return _this.state.selectedIndex;
-          // reached the top of the list
+          // reached the top of the list - stop
           if (_this.state.selectedIndex === 0) return 0;
           // else decrement
           return _this.state.selectedIndex - 1;
