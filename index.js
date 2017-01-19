@@ -8,7 +8,7 @@ var SelectBox = function(element) {
   };
 
   this.constants = {
-    optionElementsLength: this.domRefs.optionNodes.length,
+    optionNodesLength: this.domRefs.optionNodes.length,
   };
 
   this.state = {
