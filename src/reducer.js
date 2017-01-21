@@ -10,7 +10,7 @@ const reducer = (state, action) => {
   case 'SET_OPTIONS_PANEL_OPEN':
     return state = {
       ...state,
-      optionsOpen: action.value
+      isOptionsPanelOpen: action.value
     };
 
   case 'SET_SELECTED_INDEX':
