@@ -20,14 +20,14 @@ body {
 
 .select-box {
   color: #555;
+  border: 1px solid #fff;
   position: relative;
-  margin: 0.5rem 0;
   cursor: pointer;
   height: 44px;
   line-height: 44px;
   background: #fff;
   border-radius: 2px;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2); 
 }
 
 .select-box:focus {
@@ -40,13 +40,15 @@ body {
   position: absolute;
   z-index: 2;
   border: 1px solid #8bc34a;
-  border-radius: 2px;
-  top: 50px;
-  left: 0;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 2px 2px;
+  top: 42px;
+  left: -1px;
   height: 0;
   visibility: hidden;
   width: 100%;
   overflow: hidden;
+  box-sizing: content-box;
   box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2);
 }
 
@@ -60,7 +62,7 @@ body {
 
 .option {
   padding: 0 1rem;
-  border-bottom: #eee 1px solid;
+  border-top: #eee 1px solid;
 }
 
 .option:hover {
@@ -68,7 +70,7 @@ body {
 }
 
 .option:active {
-  background: #8bc34a;
+  background: #f1f8e9;
 }
 
 .option.selected {
