@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --host 0.0.0.0 --port 3001",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "deploy": ".bin/deploy.sh"
   },
 
   "author": "Ben Bowes <bb@benbowes.com>",
