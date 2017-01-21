@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import * as actionTypes from './actionTypes';
 import reducer from './reducer';
 
 class SelectBox {
@@ -48,12 +49,12 @@ class SelectBox {
 
   handleTouchStart() {
     // User has finished dragging
-    this.updateState({ type: 'SET_IS_DRAGGING', value: false });
+    this.updateState({ type: actionTypes.SET_IS_DRAGGING, value: false });
   }
 
   handleTouchMove() {
     // User is dragging
-    this.updateState({ type: 'SET_IS_DRAGGING', value: true });
+    this.updateState({ type: actionTypes.SET_IS_DRAGGING, value: true });
   }
 
   updateUI() {
@@ -70,7 +71,10 @@ class SelectBox {
     // Set label and select-box form vale
     this.domRefs.label.textContent = selectedOption.textContent;
     this.domRefs.hiddenInputValue.value = selectedOption.getAttribute('data-value');
-    this.updateState({ type: 'SET_LAST_SELECTED_INDEX', value: this.state.selectedIndex });
+    this.updateState({
+      type: actionTypes.SET_LAST_SELECTED_INDEX,
+      value: this.state.selectedIndex
+    });
   }
 
   getInitialSelectedOptionIndex() {
@@ -117,19 +121,31 @@ class SelectBox {
 
     switch (mode) {
     case 'open':
-      this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
+      this.updateState({
+        type: actionTypes.SET_OPTIONS_PANEL_OPEN,
+        value: true
+      });
       return selectBox.classList.add('options-container-visible');
 
     case 'close':
-      this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
+      this.updateState({
+        type: actionTypes.SET_OPTIONS_PANEL_OPEN,
+        value: false
+      });
       return selectBox.classList.remove('options-container-visible');
 
     default:
       if (this.state.optionsOpen === false) {
-        this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
+        this.updateState({
+          type: actionTypes.SET_OPTIONS_PANEL_OPEN,
+          value: true
+        });
         return selectBox.classList.add('options-container-visible');
       } else {
-        this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
+        this.updateState({
+          type: actionTypes.SET_OPTIONS_PANEL_OPEN,
+          value: false
+        });
         return selectBox.classList.remove('options-container-visible');
       }
     }
@@ -188,7 +204,7 @@ class SelectBox {
       // Clicked on a `.option` if its parent is `.options`
       if (e && e.target.parentNode.classList.contains('options-container')) {
         this.updateState({
-          type: 'SET_SELECTED_INDEX',
+          type: actionTypes.SET_SELECTED_INDEX,
           value: this.getOptionIndex(e.target)
         });
         this.updateUI();
@@ -203,8 +219,7 @@ class SelectBox {
   }
 }
 
-// START
-// Find elements in DOM with `select-box` class, and applies SelectBox()
+// START - Find elements in DOM with `select-box` class, and apply SelectBox()
 [...document.querySelectorAll('.select-box')].forEach((element) => {
   return new SelectBox(element);
 });

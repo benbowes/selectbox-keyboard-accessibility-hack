@@ -7,7 +7,7 @@ const reducer = (state, action) => {
       isDragging: action.value
     };
 
-  case 'SET_OPTIONS_OPEN':
+  case 'SET_OPTIONS_PANEL_OPEN':
     return state = {
       ...state,
       optionsOpen: action.value
