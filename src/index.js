@@ -16,13 +16,6 @@ class SelectBox {
       OPTION_NODES_LENGTH: this.domRefs.optionNodes.length
     };
 
-    this.state = {
-      isDragging: false,
-      isOptionsPanelOpen: false,
-      selectedIndex: this.getInitialSelectedOptionIndex(), // enables initial selection
-      lastSelectedIndex: 0
-    };
-
     // Bind functions for listeners
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -30,12 +23,19 @@ class SelectBox {
     this.handleSelectBoxKeyEvent = this.handleSelectBoxKeyEvent.bind(this);
     this.handleSelectBoxClick = this.handleSelectBoxClick.bind(this);
 
+    this.setupStateManagement();
     this.addListeners();
     this.updateUI();
   }
 
-  updateState(action) {
-    this.state = reducer(this.state, action);
+  setupStateManagement() {
+    this.state = reducer.initialState;
+
+    // If this selectbox has an option with the class `selected` select it
+    this.updateState({
+      type: actionTypes.SET_SELECTED_INDEX,
+      value: this.getInitialSelectedOptionIndex()
+    });
   }
 
   addListeners() {
@@ -45,22 +45,6 @@ class SelectBox {
     this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
     this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
-  }
-
-  handleTouchStart() {
-    // It is initially assumed that the user is not dragging
-    this.updateState({
-      type: actionTypes.SET_IS_DRAGGING,
-      value: false
-    });
-  }
-
-  handleTouchMove() {
-    // User is dragging
-    this.updateState({
-      type: actionTypes.SET_IS_DRAGGING,
-      value: true
-    });
   }
 
   updateUI() {
@@ -83,6 +67,10 @@ class SelectBox {
       type: actionTypes.SET_LAST_SELECTED_INDEX,
       value: this.state.selectedIndex
     });
+  }
+
+  updateState(action) {
+    this.state = reducer(this.state, action);
   }
 
   getInitialSelectedOptionIndex() {
@@ -164,6 +152,22 @@ class SelectBox {
 
   // HANDLERS
 
+  handleTouchStart() {
+    // It is initially assumed that the user is not dragging
+    this.updateState({
+      type: actionTypes.SET_IS_DRAGGING,
+      value: false
+    });
+  }
+
+  handleTouchMove() {
+    // User is dragging
+    this.updateState({
+      type: actionTypes.SET_IS_DRAGGING,
+      value: true
+    });
+  }
+
   handleSelectBoxKeyEvent(e) {
     if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 32 || e.keyCode === 13) {
       e.preventDefault(); // Disable native functionality
@@ -182,7 +186,7 @@ class SelectBox {
 
     case 38: // Up
       this.updateState({
-        type: 'SET_SELECTED_INDEX',
+        type: actionTypes.SET_SELECTED_INDEX,
         value: this.getNextIndex('decrement')
       });
       // Open the options panel
@@ -193,7 +197,7 @@ class SelectBox {
 
     case 40: // Down
       this.updateState({
-        type: 'SET_SELECTED_INDEX',
+        type: actionTypes.SET_SELECTED_INDEX,
         value: this.getNextIndex('increment')
       });
       // Open the options panel

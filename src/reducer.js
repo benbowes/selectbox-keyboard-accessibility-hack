@@ -1,4 +1,11 @@
-const reducer = (state, action) => {
+export const initialState = {
+  isDragging: false,
+  isOptionsPanelOpen: false,
+  selectedIndex: 0,
+  lastSelectedIndex: 0
+};
+
+const reducer = (state = initialState, action) => {
   switch(action.type) {
 
   case 'SET_IS_DRAGGING':
