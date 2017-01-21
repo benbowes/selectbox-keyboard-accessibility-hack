@@ -29,9 +29,21 @@ class SelectBox {
 
   updateState(action) {
     switch(action.type) {
-    case 'SET_OPTIONS_OPEN': return this.state.optionsOpen = action.value;
-    case 'SET_SELECTED_INDEX': return this.state.selectedIndex = action.value;
-    case 'SET_LAST_SELECTED_INDEX': return this.state.lastSelectedIndex = action.value;
+    case 'SET_OPTIONS_OPEN':
+      return this.state = {
+        ...this.state,
+        optionsOpen: action.value
+      };
+    case 'SET_SELECTED_INDEX':
+      return this.state = {
+        ...this.state,
+        selectedIndex: action.value
+      };
+    case 'SET_LAST_SELECTED_INDEX':
+      return this.state = {
+        ...this.state,
+        lastSelectedIndex: action.value
+      };
     }
   }
 
@@ -43,8 +55,8 @@ class SelectBox {
   }
 
   updateUI() {
-    var selectedOption = this.domRefs.optionNodes[this.state.selectedIndex];
-    var previousOption = this.domRefs.optionNodes[this.state.lastSelectedIndex];
+    const selectedOption = this.domRefs.optionNodes[this.state.selectedIndex];
+    const previousOption = this.domRefs.optionNodes[this.state.lastSelectedIndex];
 
     // Toggle option classes
     previousOption.classList.remove('selected');
@@ -60,33 +72,36 @@ class SelectBox {
   }
 
   getInitialSelectedOptionIndex() {
-    var initialSelectedOption = this.domRefs.selectBox.querySelector('.option.selected');
+    const initialSelectedOption = this.domRefs.selectBox.querySelector('.option.selected');
     return (initialSelectedOption)
       ? this.getOptionIndex(initialSelectedOption)
       : 0;
   }
 
   getNextIndex(mode) {
+    const { optionsOpen, selectedIndex } = this.state;
+    const { optionNodesLength } = this.constants;
+
     switch (mode) {
     case 'increment':
-      return (function(_this) {
+      return () => {
         // hold selection on current selected option when options panel opens
-        if (_this.state.optionsOpen === false) return _this.state.selectedIndex;
+        if (optionsOpen === false) return selectedIndex;
         // At the end of the list - stop
-        if (_this.state.selectedIndex === _this.constants.optionNodesLength - 1) return _this.constants.optionNodesLength - 1;
+        if (selectedIndex === optionNodesLength - 1) return optionNodesLength - 1;
         // else increment
-        return _this.state.selectedIndex + 1;
-      })(this);
+        return selectedIndex + 1;
+      };
 
     case 'decrement':
-      return (function(_this) {
+      return () => {
         // hold selection on current selected option when options panel opens
-        if (_this.state.optionsOpen === false) return _this.state.selectedIndex;
+        if (optionsOpen === false) return selectedIndex;
         // reached the top of the list - stop
-        if (_this.state.selectedIndex === 0) return 0;
+        if (selectedIndex === 0) return 0;
         // else decrement
-        return _this.state.selectedIndex - 1;
-      })(this);
+        return selectedIndex - 1;
+      };
     }
   }
 
@@ -96,22 +111,23 @@ class SelectBox {
   }
 
   toggleOptionsPanel(mode) {
+    const { selectBox } = this.domRefs;
     switch (mode) {
     case 'open':
       this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
-      return this.domRefs.selectBox.classList.add('options-container-visible');
+      return selectBox.classList.add('options-container-visible');
 
     case 'close':
       this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
-      return this.domRefs.selectBox.classList.remove('options-container-visible');
+      return selectBox.classList.remove('options-container-visible');
 
     default:
       if (this.state.optionsOpen === false) {
         this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
-        return this.domRefs.selectBox.classList.add('options-container-visible');
+        return selectBox.classList.add('options-container-visible');
       } else {
         this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
-        return this.domRefs.selectBox.classList.remove('options-container-visible');
+        return selectBox.classList.remove('options-container-visible');
       }
     }
   }
