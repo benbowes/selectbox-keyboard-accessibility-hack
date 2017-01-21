@@ -16,10 +16,10 @@ https://benbowes.github.io/selectbox-keyboard-accessibility-hack
 - :white_check_mark: Safari latest
 - :white_check_mark: Firefox latest
 - :white_check_mark: IE 11.
-  * :heavy_exclamation_mark: Submits on enter press, when in form
-
+  
 #### iPhone
-- :white_check_mark: iPhone 6+ - iOS 9
+- :white_check_mark: iPhone 6+ - iOS 9 (Safari)
+- :white_check_mark: iPhone 5 - iOS 6 (Safari)
 
 #### iPad
 - :white_check_mark: iPad Pro - iOS 10
