@@ -39,12 +39,22 @@ class SelectBox {
   }
 
   addListeners() {
-    this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove, false);
-    this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart, false);
-    this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
-    this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
-    this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
+    if (this.isTouchDevice()) {
+      this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove, false);
+      this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart, false);
+      this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
+    } else {
+      this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
+      this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
+    }
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
+  }
+
+
+  isTouchDevice() {
+    return (('ontouchstart' in window)
+      || (navigator.MaxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0));
   }
 
   updateUI() {
@@ -211,10 +221,8 @@ class SelectBox {
   handleSelectBoxClick(e) {
     // Ignore click and touchend if user is dragging
     if(this.state.isDragging === false) {
-
-      // There are 2 events being fired. mousedown (desktop), touchstart (mobile).
-      // Let the 1st cancel the other with `preventDefault`
       e && e.preventDefault();
+      e && e.stopPropagation();
 
       this.domRefs.selectBox.focus();
 
