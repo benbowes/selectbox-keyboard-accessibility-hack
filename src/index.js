@@ -9,7 +9,7 @@ class SelectBox {
     };
 
     this.constants = {
-      optionNodesLength: this.domRefs.optionNodes.length
+      OPTION_NODES_LENGTH: this.domRefs.optionNodes.length
     };
 
     this.state = {
@@ -29,16 +29,19 @@ class SelectBox {
 
   updateState(action) {
     switch(action.type) {
+
     case 'SET_OPTIONS_OPEN':
       return this.state = {
         ...this.state,
         optionsOpen: action.value
       };
+
     case 'SET_SELECTED_INDEX':
       return this.state = {
         ...this.state,
         selectedIndex: action.value
       };
+
     case 'SET_LAST_SELECTED_INDEX':
       return this.state = {
         ...this.state,
@@ -48,7 +51,7 @@ class SelectBox {
   }
 
   addListeners() {
-    this.domRefs.selectBox.addEventListener('touchstart', this.handleSelectBoxClick, false);
+    this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
     this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
     this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
@@ -80,28 +83,28 @@ class SelectBox {
 
   getNextIndex(mode) {
     const { optionsOpen, selectedIndex } = this.state;
-    const { optionNodesLength } = this.constants;
+    const { OPTION_NODES_LENGTH } = this.constants;
 
     switch (mode) {
     case 'increment':
-      return () => {
+      return (() => {
         // hold selection on current selected option when options panel opens
         if (optionsOpen === false) return selectedIndex;
         // At the end of the list - stop
-        if (selectedIndex === optionNodesLength - 1) return optionNodesLength - 1;
+        if (selectedIndex === OPTION_NODES_LENGTH - 1) return OPTION_NODES_LENGTH - 1;
         // else increment
         return selectedIndex + 1;
-      };
+      })();
 
     case 'decrement':
-      return () => {
+      return (() => {
         // hold selection on current selected option when options panel opens
         if (optionsOpen === false) return selectedIndex;
         // reached the top of the list - stop
         if (selectedIndex === 0) return 0;
         // else decrement
         return selectedIndex - 1;
-      };
+      })();
     }
   }
 
@@ -112,6 +115,7 @@ class SelectBox {
 
   toggleOptionsPanel(mode) {
     const { selectBox } = this.domRefs;
+
     switch (mode) {
     case 'open':
       this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
@@ -147,12 +151,20 @@ class SelectBox {
       return this.domRefs.selectBox.blur();
 
     case 38: // Up
-      this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getNextIndex('decrement') });
+      this.updateState({
+        type: 'SET_SELECTED_INDEX',
+        value: this.getNextIndex('decrement')
+      });
+
       if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
       return this.updateUI();
 
     case 40: // Down
-      this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getNextIndex('increment') });
+      this.updateState({
+        type: 'SET_SELECTED_INDEX',
+        value: this.getNextIndex('increment')
+      });
+
       if (this.state.optionsOpen === false) this.toggleOptionsPanel('open');
       return this.updateUI();
     }
@@ -167,7 +179,10 @@ class SelectBox {
 
     // Clicked on a `.option` if its parent is `.options`
     if (e && e.target.parentNode.classList.contains('options-container')) {
-      this.updateState({ type: 'SET_SELECTED_INDEX', value: this.getOptionIndex(e.target) });
+      this.updateState({
+        type: 'SET_SELECTED_INDEX',
+        value: this.getOptionIndex(e.target)
+      });
       this.updateUI();
     }
 
