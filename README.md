@@ -2,7 +2,7 @@
 
 Hacking away at making a dropdown select-box behave on desktop similarly to the native chrome one.
 
-Using only pure ES5 (For fun).
+Using only pure ES6 (For fun).
 
 <img src="https://media1.giphy.com/media/401CMO1Du5cju/giphy.gif" width="40%" /> <img src="https://media1.giphy.com/media/D4aqbOMrQnHxK/giphy.gif" width="30%" />
 
@@ -19,7 +19,7 @@ https://benbowes.github.io/selectbox-keyboard-accessibility-hack
   
 #### Android
 - :white_check_mark: Nexus 5 - Android 4.4 (Chrome)
-- :sad: Samsung Galaxy S3 - Android 4.1 (Chrome) - BUGGY
+- :cry: Samsung Galaxy S3 - Android 4.1 (Chrome) - BUGGY
 
 #### iPhone
 - :white_check_mark: iPhone 6+ - iOS 9 (Safari)
