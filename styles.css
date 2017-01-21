@@ -9,6 +9,15 @@ body {
   line-height: 1.4;
 }
 
+.row {
+  display: block;
+}
+
+.colHalf {
+  display: inline-block;
+  width: 50%;
+}
+
 .select-box {
   color: #555;
   position: relative;

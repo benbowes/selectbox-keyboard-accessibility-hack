@@ -10,55 +10,65 @@
 
 <form>
 
-  <div role="listbox" tabindex="0" class="select-box">
-    <div class="label-container">
-      Colour: <span class="label">Any</span>
-      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
-    </div>
-    <div class="options-container">
-      <div role="option" class="option" data-value="null">Any</div>
-      <div role="option" class="option" data-value="green">Green</div>
-      <div role="option" class="option" data-value="orange">Orange</div>
-      <div role="option" class="option" data-value="red">Red</div>
-      <div role="option" class="option" data-value="blue">Blue</div>
-      <div role="option" class="option" data-value="violet">Violet</div>
-      <div role="option" class="option" data-value="periwinkle">Periwinkle</div>
-    </div>
-    <input type="hidden" name="colour" value="null" />
-  </div>
-
-  <div role="listbox" tabindex="0" class="select-box">
-    <div class="label-container">
-      Type: <span class="label">Any</span>
-      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
-    </div>
-    <div class="options-container">
-      <div role="option" class="option" data-value="null">Any</div>
-      <div role="option" class="option" data-value="coupe">Coupe</div>
-      <div role="option" class="option" data-value="wagon">Station wagon</div>
-      <div role="option" class="option" data-value="sedan">Sedan</div>
-      <div role="option" class="option" data-value="convertable">Convertable</div>
-      <div role="option" class="option" data-value="SUV">SUV</div>
-    </div>
-    <input type="hidden" name="type" value="null" />
-  </div>
-
-  <div role="listbox" tabindex="0" class="select-box">
+<div class="row">
+  <div class="colHalf">
+    <div role="listbox" tabindex="0" class="select-box">
       <div class="label-container">
-      Performance: <span class="label">Any</span>
-      <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+        Colour: <span class="label">Any</span>
+        <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+      </div>
+      <div class="options-container">
+        <div role="option" class="option" data-value="null">Any</div>
+        <div role="option" class="option" data-value="green">Green</div>
+        <div role="option" class="option" data-value="orange">Orange</div>
+        <div role="option" class="option" data-value="red">Red</div>
+        <div role="option" class="option" data-value="blue">Blue</div>
+        <div role="option" class="option" data-value="violet">Violet</div>
+        <div role="option" class="option" data-value="periwinkle">Periwinkle</div>
+      </div>
+      <input type="hidden" name="colour" value="null" />
     </div>
-    <div class="options-container">
-      <div role="option" class="option" data-value="null">Any</div>
-      <div role="option" class="option" data-value="poor">Poor</div>
-      <div role="option" class="option" data-value="reasonable">Reasonable</div>
-      <div role="option" class="option" data-value="good">Good</div>
-      <div role="option" class="option" data-value="excellent">Excellent</div>
-      <div role="option" class="option" data-value="amazing">Amazing</div>
-    </div>
-    <input type="hidden" name="performance" value="null" />
   </div>
 
+  <div class="colHalf">
+    <div role="listbox" tabindex="0" class="select-box">
+      <div class="label-container">
+        Type: <span class="label">Any</span>
+        <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+      </div>
+      <div class="options-container">
+        <div role="option" class="option" data-value="null">Any</div>
+        <div role="option" class="option" data-value="coupe">Coupe</div>
+        <div role="option" class="option" data-value="wagon">Station wagon</div>
+        <div role="option" class="option" data-value="sedan">Sedan</div>
+        <div role="option" class="option" data-value="convertable">Convertable</div>
+        <div role="option" class="option" data-value="SUV">SUV</div>
+      </div>
+      <input type="hidden" name="type" value="null" />
+    </div>
+  </div>
+
+  <div class="colHalf">
+    <div role="listbox" tabindex="0" class="select-box">
+        <div class="label-container">
+        Performance: <span class="label">Any</span>
+        <i class="icon fa fa-angle-down" aria-hidden="true"></i>
+      </div>
+      <div class="options-container">
+        <div role="option" class="option" data-value="null">Any</div>
+        <div role="option" class="option" data-value="poor">Poor</div>
+        <div role="option" class="option" data-value="reasonable">Reasonable</div>
+        <div role="option" class="option" data-value="good">Good</div>
+        <div role="option" class="option" data-value="excellent">Excellent</div>
+        <div role="option" class="option" data-value="amazing">Amazing</div>
+      </div>
+      <input type="hidden" name="performance" value="null" />
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
   <select name="make">
     <option selected value="null">Any</option>
     <option value="fiat">Fiat</option>
@@ -68,6 +78,8 @@
   </select>
 
   <button type="submit">Submit</button>
+</div>
+
 
 </form>
 
@@ -79,7 +91,7 @@ faucibus felis, sed dapibus erat fermentum ac. Vestibulum non congue urna, quis 
 fermentum ac. Vestibulum non congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt faucibus felis, sed dapibus erat fermentum ac. Vestibulum non
 congue urna, quis vulputate lorem. Integer id interdum augue. &or; &because; &Star;</p>
 
-<script src="index.js"></script>
+<script src="dist/index.js"></script>
 
 </body>
 </html>
