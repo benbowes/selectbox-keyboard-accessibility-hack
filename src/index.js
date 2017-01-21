@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import reducer from './reducer';
 
 class SelectBox {
