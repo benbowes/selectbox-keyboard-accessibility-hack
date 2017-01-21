@@ -100,19 +100,19 @@ SelectBox.prototype = {
     switch (mode) {
       case 'open':
         this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
-        return this.domRefs.selectBox.classList.add('options-visible');
+        return this.domRefs.selectBox.classList.add('options-container-visible');
 
       case 'close':
         this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
-        return this.domRefs.selectBox.classList.remove('options-visible');
+        return this.domRefs.selectBox.classList.remove('options-container-visible');
 
       default:
         if (this.state.optionsOpen === false) {
           this.updateState({ type: 'SET_OPTIONS_OPEN', value: true });
-          return this.domRefs.selectBox.classList.add('options-visible');
+          return this.domRefs.selectBox.classList.add('options-container-visible');
         } else {
           this.updateState({ type: 'SET_OPTIONS_OPEN', value: false });
-          return this.domRefs.selectBox.classList.remove('options-visible');
+          return this.domRefs.selectBox.classList.remove('options-container-visible');
         }
     }
   },

@@ -26,7 +26,7 @@ body {
   border: 1px solid #8bc34a;
 }
 
-.select-box > .options {
+.select-box > .options-container {
   background: #fff;
   position: absolute;
   z-index: 2;
@@ -41,10 +41,11 @@ body {
   box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2);
 }
 
-.select-box.options-visible > .options {
+.select-box.options-container-visible > .options-container {
   height: auto;
   visibility: visible;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   max-height: 200px;
 }
 
@@ -65,7 +66,7 @@ body {
   background: #eee;
 }
 
-.labelContainer {
+.label-container {
   padding: 0 2rem 0 1rem;
   white-space: nowrap;
   text-overflow: ellipsis;
