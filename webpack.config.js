@@ -1,4 +1,7 @@
 module.exports = {
+  devServer: {
+    inline: true
+  },
   devtool: 'eval',
   entry: './src/index.js',
   output: {
