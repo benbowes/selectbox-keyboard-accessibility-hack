@@ -17,6 +17,10 @@ https://benbowes.github.io/selectbox-keyboard-accessibility-hack
 - :white_check_mark: Firefox latest
 - :white_check_mark: IE 11.
   
+#### Android
+- :white_check_mark: Nexus 5 - Android 4.4 (Chrome)
+- :sad: Samsung Galaxy S3 - Android 4.1 (Chrome) - BUGGY
+
 #### iPhone
 - :white_check_mark: iPhone 6+ - iOS 9 (Safari)
 - :white_check_mark: iPhone 5 - iOS 6 (Safari)
