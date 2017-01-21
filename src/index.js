@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import 'babel-polyfill'; // For IE 11
 import * as actionTypes from './actionTypes';
 import reducer from './reducer';
 
@@ -18,9 +18,9 @@ class SelectBox {
 
     this.state = {
       isDragging: false,
-      selectedIndex: this.getInitialSelectedOptionIndex(),
-      lastSelectedIndex: 0,
-      optionsOpen: false
+      isOptionsPanelOpen: false,
+      selectedIndex: this.getInitialSelectedOptionIndex(), // enables initial selection
+      lastSelectedIndex: 0
     };
 
     // Bind functions for listeners
@@ -48,29 +48,37 @@ class SelectBox {
   }
 
   handleTouchStart() {
-    // User has finished dragging
-    this.updateState({ type: actionTypes.SET_IS_DRAGGING, value: false });
+    // It is initially assumed that the user is not dragging
+    this.updateState({
+      type: actionTypes.SET_IS_DRAGGING,
+      value: false
+    });
   }
 
   handleTouchMove() {
     // User is dragging
-    this.updateState({ type: actionTypes.SET_IS_DRAGGING, value: true });
+    this.updateState({
+      type: actionTypes.SET_IS_DRAGGING,
+      value: true
+    });
   }
 
   updateUI() {
     const selectedOption = this.domRefs.optionNodes[this.state.selectedIndex];
     const previousOption = this.domRefs.optionNodes[this.state.lastSelectedIndex];
 
-    // Toggle option classes
+    // Select current selected option, deselect last selected option
     previousOption.classList.remove('selected');
     selectedOption.classList.add('selected');
 
     // Scroll to keep the selected option in view
     selectedOption.parentNode.scrollTop = selectedOption.offsetTop;
 
-    // Set label and select-box form vale
+    // Set label and select-box form value
     this.domRefs.label.textContent = selectedOption.textContent;
     this.domRefs.hiddenInputValue.value = selectedOption.getAttribute('data-value');
+
+    // Keep a reference of the current selectedIndex to use as lastSelectedIndex next time
     this.updateState({
       type: actionTypes.SET_LAST_SELECTED_INDEX,
       value: this.state.selectedIndex
@@ -85,27 +93,27 @@ class SelectBox {
   }
 
   getNextIndex(mode) {
-    const { optionsOpen, selectedIndex } = this.state;
+    const { isOptionsPanelOpen, selectedIndex } = this.state;
     const { OPTION_NODES_LENGTH } = this.constants;
 
     switch (mode) {
     case 'increment':
       return (() => {
-        // hold selection on current selected option when options panel opens
-        if (optionsOpen === false) return selectedIndex;
-        // At the end of the list - stop
+        // Hold selection on current selected option when options panel first opens
+        if (isOptionsPanelOpen === false) return selectedIndex;
+        // User is at the end of the options so stay there
         if (selectedIndex === OPTION_NODES_LENGTH - 1) return OPTION_NODES_LENGTH - 1;
-        // else increment
+        // Else increment
         return selectedIndex + 1;
       })();
 
     case 'decrement':
       return (() => {
-        // hold selection on current selected option when options panel opens
-        if (optionsOpen === false) return selectedIndex;
-        // reached the top of the list - stop
+        // Hold selection on current selected option when options panel first opens
+        if (isOptionsPanelOpen === false) return selectedIndex;
+        // User is at start of the options so stay there
         if (selectedIndex === 0) return 0;
-        // else decrement
+        // Else decrement
         return selectedIndex - 1;
       })();
     }
@@ -121,6 +129,7 @@ class SelectBox {
 
     switch (mode) {
     case 'open':
+      // Open the options panel
       this.updateState({
         type: actionTypes.SET_OPTIONS_PANEL_OPEN,
         value: true
@@ -128,6 +137,7 @@ class SelectBox {
       return selectBox.classList.add('options-container-visible');
 
     case 'close':
+      // Close the options panel
       this.updateState({
         type: actionTypes.SET_OPTIONS_PANEL_OPEN,
         value: false
@@ -135,7 +145,8 @@ class SelectBox {
       return selectBox.classList.remove('options-container-visible');
 
     default:
-      if (this.state.optionsOpen === false) {
+      // Toggle the options panel open or closed based on this.state.isOptionsPanelOpen
+      if (this.state.isOptionsPanelOpen === false) {
         this.updateState({
           type: actionTypes.SET_OPTIONS_PANEL_OPEN,
           value: true
@@ -174,7 +185,8 @@ class SelectBox {
         type: 'SET_SELECTED_INDEX',
         value: this.getNextIndex('decrement')
       });
-      if (this.state.optionsOpen === false) {
+      // Open the options panel
+      if (this.state.isOptionsPanelOpen === false) {
         this.toggleOptionsPanel('open');
       }
       return this.updateUI();
@@ -184,7 +196,8 @@ class SelectBox {
         type: 'SET_SELECTED_INDEX',
         value: this.getNextIndex('increment')
       });
-      if (this.state.optionsOpen === false) {
+      // Open the options panel
+      if (this.state.isOptionsPanelOpen === false) {
         this.toggleOptionsPanel('open');
       }
       return this.updateUI();
@@ -220,6 +233,6 @@ class SelectBox {
 }
 
 // START - Find elements in DOM with `select-box` class, and apply SelectBox()
-[...document.querySelectorAll('.select-box')].forEach((element) => {
+[ ...document.querySelectorAll('.select-box') ].forEach((element) => {
   return new SelectBox(element);
 });
