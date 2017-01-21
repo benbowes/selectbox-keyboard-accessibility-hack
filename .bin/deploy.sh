@@ -9,9 +9,6 @@ fi
 # Build JS into dist/app.js
 webpack --config webpack.config.js
 
-# Copy other files into dist/
-cp index.html styles.css dist
-
 # git add new dist/ assets
 git add dist/index.js dist/index.html dist/styles.css
 
