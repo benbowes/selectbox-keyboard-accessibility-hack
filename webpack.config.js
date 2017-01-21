@@ -2,8 +2,8 @@ module.exports = {
   devtool: 'eval',
   entry: './src/index.js',
   output: {
-    path: './',
-    filename: './dist/index.js'
+    path: './dist/',
+    filename: '.index.js'
   },
   module: {
     loaders: [{
