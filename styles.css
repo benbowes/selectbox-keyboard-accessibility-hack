@@ -10,12 +10,13 @@ body {
 }
 
 .row {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.colHalf {
-  display: inline-block;
-  width: 50%;
+.col {
+  flex: 0 0 100%;
+  margin: 0 0 1rem 0;
 }
 
 .select-box {
@@ -27,7 +28,7 @@ body {
   line-height: 44px;
   background: #fff;
   border-radius: 2px;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2); 
+  box-shadow: 0 1px 2px 0 rgba(0,0,0, 0.2);
 }
 
 .select-box:focus {
@@ -97,4 +98,14 @@ body {
   font-size: 1.5rem;
   right: 1rem;
   top: 10px;
+}
+
+@media (min-width: 600px) {
+  .row {
+    flex-wrap: nowrap;
+  }
+  .col {
+    flex: 0 0 33.332%;
+    margin: 0;
+  }
 }

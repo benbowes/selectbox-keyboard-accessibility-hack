@@ -8,10 +8,13 @@
 </head>
 <body>
 
+<h1>Custom Select Box Keyboard Accessibility Example</h1>
 <form>
 
+<h3>Custom Selects</h3>
+
 <div class="row">
-  <div class="colHalf">
+  <div class="col">
     <div role="listbox" tabindex="0" class="select-box">
       <div class="label-container">
         Colour: <span class="label">Any</span>
@@ -30,7 +33,7 @@
     </div>
   </div>
 
-  <div class="colHalf">
+  <div class="col">
     <div role="listbox" tabindex="0" class="select-box">
       <div class="label-container">
         Type: <span class="label">Any</span>
@@ -48,7 +51,7 @@
     </div>
   </div>
 
-  <div class="colHalf">
+  <div class="col">
     <div role="listbox" tabindex="0" class="select-box">
         <div class="label-container">
         Performance: <span class="label">Any</span>
@@ -68,7 +71,26 @@
 </div>
 
 
+<br/>
+<h3>Native Selects</h3>
+
 <div class="row">
+  <select name="make">
+    <option selected value="null">Any</option>
+    <option value="fiat">Fiat</option>
+    <option value="subaru">Subaru</option>
+    <option value="bmw">BMW</option>
+    <option value="tesla">Tesla</option>
+  </select>
+
+  <select name="make">
+    <option selected value="null">Any</option>
+    <option value="fiat">Fiat</option>
+    <option value="subaru">Subaru</option>
+    <option value="bmw">BMW</option>
+    <option value="tesla">Tesla</option>
+  </select>
+
   <select name="make">
     <option selected value="null">Any</option>
     <option value="fiat">Fiat</option>
