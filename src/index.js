@@ -5,6 +5,10 @@ import reducer from './reducer';
 class SelectBox {
 
   constructor(element) {
+    // Cause android 4 stock browser
+    this.eventCanCall = true;
+    this.eventCallThrottle;
+
     this.domRefs = {
       selectBox: element,
       optionNodes: element.querySelectorAll('.option'),
@@ -39,22 +43,13 @@ class SelectBox {
   }
 
   addListeners() {
-    if (this.isTouchDevice()) {
-      this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove, false);
-      this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart, false);
-      this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
-    } else {
-      this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
-      this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
-    }
+    this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove, false);
+    this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart, false);
+    this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
+
+  //  this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
+  //  this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
-  }
-
-
-  isTouchDevice() {
-    return (('ontouchstart' in window)
-      || (navigator.MaxTouchPoints > 0)
-      || (navigator.msMaxTouchPoints > 0));
   }
 
   updateUI() {
@@ -80,7 +75,7 @@ class SelectBox {
   }
 
   updateState(action) {
-    this.state = reducer(this.state, action);
+    return this.state = reducer(this.state, action);
   }
 
   getInitialSelectedOptionIndex() {
@@ -164,7 +159,7 @@ class SelectBox {
 
   handleTouchStart() {
     // It is initially assumed that the user is not dragging
-    this.updateState({
+    return this.updateState({
       type: actionTypes.SET_IS_DRAGGING,
       value: false
     });
@@ -172,7 +167,7 @@ class SelectBox {
 
   handleTouchMove() {
     // User is dragging
-    this.updateState({
+    return this.updateState({
       type: actionTypes.SET_IS_DRAGGING,
       value: true
     });
@@ -220,9 +215,15 @@ class SelectBox {
 
   handleSelectBoxClick(e) {
     // Ignore click and touchend if user is dragging
-    if(this.state.isDragging === false) {
+    if(this.state.isDragging === false && this.eventCanCall) {
+
       e && e.preventDefault();
-      e && e.stopPropagation();
+
+      clearTimeout(this.eventCallThrottle);
+      this.eventCanCall = false;
+      this.eventCallThrottle = setTimeout(() => {
+        this.eventCanCall = true;
+      }, 200);
 
       this.domRefs.selectBox.focus();
 
