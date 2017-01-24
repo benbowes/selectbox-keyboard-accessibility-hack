@@ -1,10 +1,12 @@
 import 'babel-polyfill'; // For IE 11
 import * as actionTypes from './actionTypes';
 import reducer from './reducer';
+import Hammer from 'hammerjs/hammer';
 
 class SelectBox {
 
   constructor(element) {
+
     this.domRefs = {
       selectBox: element,
       optionNodes: element.querySelectorAll('.option'),
@@ -17,11 +19,9 @@ class SelectBox {
     };
 
     // Bind functions for listeners
-    this.handleTouchMove = this.handleTouchMove.bind(this);
-    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleSelectBoxClick = this.handleSelectBoxClick.bind(this);
     this.handleSelectBoxBlur = this.handleSelectBoxBlur.bind(this);
     this.handleSelectBoxKeyEvent = this.handleSelectBoxKeyEvent.bind(this);
-    this.handleSelectBoxClick = this.handleSelectBoxClick.bind(this);
 
     this.setupStateManagement();
     this.addListeners();
@@ -39,22 +39,11 @@ class SelectBox {
   }
 
   addListeners() {
-    if (this.isTouchDevice()) {
-      this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove, false);
-      this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart, false);
-      this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick, false);
-    } else {
-      this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick, false);
-      this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
-    }
+    // Let HammerJS deal with click/tap/press
+    new Hammer(this.domRefs.selectBox).on('tap press', (e) => this.handleSelectBoxClick(e));
+    // this.domRefs.label.addEventListener('click', this.handleSelectBoxClick, false);
+    this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent, false);
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
-  }
-
-
-  isTouchDevice() {
-    return (('ontouchstart' in window)
-      || (navigator.MaxTouchPoints > 0)
-      || (navigator.msMaxTouchPoints > 0));
   }
 
   updateUI() {
@@ -162,22 +151,6 @@ class SelectBox {
 
   // HANDLERS
 
-  handleTouchStart() {
-    // It is initially assumed that the user is not dragging
-    this.updateState({
-      type: actionTypes.SET_IS_DRAGGING,
-      value: false
-    });
-  }
-
-  handleTouchMove() {
-    // User is dragging
-    this.updateState({
-      type: actionTypes.SET_IS_DRAGGING,
-      value: true
-    });
-  }
-
   handleSelectBoxKeyEvent(e) {
     if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 32 || e.keyCode === 13) {
       e.preventDefault(); // Disable native functionality
@@ -219,24 +192,20 @@ class SelectBox {
   }
 
   handleSelectBoxClick(e) {
-    // Ignore click and touchend if user is dragging
-    if(this.state.isDragging === false) {
-      e && e.preventDefault();
-      e && e.stopPropagation();
+    e && e.preventDefault();
 
-      this.domRefs.selectBox.focus();
+    this.domRefs.selectBox.focus();
 
-      // Clicked on a `.option` if its parent is `.options`
-      if (e && e.target.parentNode.classList.contains('options-container')) {
-        this.updateState({
-          type: actionTypes.SET_SELECTED_INDEX,
-          value: this.getOptionIndex(e.target)
-        });
-        this.updateUI();
-      }
-      // Open panel if closed, close panel if open
-      this.toggleOptionsPanel();
+    // Clicked on a `.option` if e.target's parent is `.options`
+    if (e && e.target.parentNode.classList.contains('options-container')) {
+      this.updateState({
+        type: actionTypes.SET_SELECTED_INDEX,
+        value: this.getOptionIndex(e.target)
+      });
+      this.updateUI();
     }
+    // Open panel if closed, close panel if open
+    this.toggleOptionsPanel();
   }
 
   handleSelectBoxBlur() {
@@ -245,6 +214,13 @@ class SelectBox {
 }
 
 // START - Find elements in DOM with `select-box` class, and apply SelectBox()
-[ ...document.querySelectorAll('.select-box') ].forEach((element) => {
-  return new SelectBox(element);
-});
+
+const elements = document.querySelectorAll('.select-box');
+
+for(let i=0; i<elements.length; i++) {
+  new SelectBox(elements[i]);
+}
+//
+// [ ...document.querySelectorAll('.select-box') ].forEach((element) => {
+//   return new SelectBox(element);
+// });

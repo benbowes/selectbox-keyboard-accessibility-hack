@@ -8,12 +8,6 @@ export const initialState = {
 const reducer = (state = initialState, action) => {
   switch(action.type) {
 
-  case 'SET_IS_DRAGGING':
-    return state = {
-      ...state,
-      isDragging: action.value
-    };
-
   case 'SET_OPTIONS_PANEL_OPEN':
     return state = {
       ...state,
