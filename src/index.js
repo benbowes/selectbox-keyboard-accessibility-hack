@@ -221,7 +221,6 @@ class SelectBox {
     // Ignore click and touchend if user is dragging
     if(this.state.isDragging === false) {
       e && e.preventDefault();
-      e && e.stopPropagation();
 
       this.domRefs.selectBox.focus();
 
