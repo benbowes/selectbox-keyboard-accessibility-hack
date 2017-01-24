@@ -19,7 +19,7 @@ https://benbowes.github.io/selectbox-keyboard-accessibility-hack
   
 #### Android
 - :white_check_mark: Nexus 5 - Android 4.4 (Chrome)
-- :cry: Samsung Galaxy S3 - Android 4.1 (Chrome) - event flow is different in this browser. Gonna implement hammerjs. To get around this.
+- :white_check_mark: Samsung Galaxy S3 - Android 4 (Native)
 
 #### iPhone
 - :white_check_mark: iPhone 6+ - iOS 9 (Safari)
