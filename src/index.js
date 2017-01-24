@@ -50,7 +50,6 @@ class SelectBox {
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur, false);
   }
 
-
   isTouchDevice() {
     return (('ontouchstart' in window)
       || (navigator.MaxTouchPoints > 0)
