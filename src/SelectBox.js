@@ -1,15 +1,18 @@
 import 'babel-polyfill'; // For IE 11
 import * as actionTypes from './actionTypes';
 import reducer from './reducer';
+import isTouchDevice from './utils/isTouchDevice';
+import getDOMChildIndex from './utils/getDOMChildIndex';
 
 export default class SelectBox {
 
-  constructor(element) {
+  constructor(selectBoxElement, formElement) {
     this.domRefs = {
-      selectBox: element,
-      optionNodes: element.querySelectorAll('.option'),
-      label: element.querySelector('.label'),
-      hiddenInputValue: element.querySelector('input[name]')
+      selectBox: selectBoxElement,
+      formElement: formElement,
+      optionNodes: selectBoxElement.querySelectorAll('.option'),
+      label: selectBoxElement.querySelector('.label'),
+      hiddenInputValue: selectBoxElement.querySelector('input[name]')
     };
 
     this.constants = {
@@ -19,7 +22,6 @@ export default class SelectBox {
     this.setupStateManagement();
     this.addListeners();
     this.updateUI();
-
     return this;
   }
 
@@ -36,20 +38,14 @@ export default class SelectBox {
   addListeners() {
     this.domRefs.selectBox.addEventListener('blur', this.handleSelectBoxBlur.bind(this), false);
 
-    if (this.isTouchDevice()) {
+    if (isTouchDevice()) {
       this.domRefs.selectBox.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
       this.domRefs.selectBox.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
       this.domRefs.selectBox.addEventListener('touchend', this.handleSelectBoxClick.bind(this), false);
     } else {
       this.domRefs.selectBox.addEventListener('mousedown', this.handleSelectBoxClick.bind(this), false);
-      this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent.bind(this), false);
+      this.domRefs.selectBox.addEventListener('keydown', this.handleSelectBoxKeyEvent.bind(this), true);
     }
-  }
-
-  isTouchDevice() {
-    return (('ontouchstart' in window)
-      || (navigator.MaxTouchPoints > 0)
-      || (navigator.msMaxTouchPoints > 0));
   }
 
   updateUI() {
@@ -82,7 +78,7 @@ export default class SelectBox {
   getInitialSelectedOptionIndex() {
     const initialSelectedOption = this.domRefs.selectBox.querySelector('.option.selected');
     return (initialSelectedOption)
-      ? this.getOptionIndex(initialSelectedOption)
+      ? getDOMChildIndex(initialSelectedOption)
       : 0;
   }
 
@@ -113,11 +109,6 @@ export default class SelectBox {
     }
   }
 
-  getOptionIndex(element) {
-    // Find index of `child` relative to `parent`
-    return Array.prototype.indexOf.call(element.parentNode.children, element);
-  }
-
   toggleOptionsPanel(mode) {
     const { selectBox } = this.domRefs;
 
@@ -128,6 +119,7 @@ export default class SelectBox {
         type: actionTypes.SET_OPTIONS_PANEL_OPEN,
         value: true
       });
+      // Submit the form if the options panel is closed and enter is pressed
       return selectBox.classList.add('options-container-visible');
 
     case 'close':
@@ -159,7 +151,7 @@ export default class SelectBox {
   // HANDLERS
 
   handleTouchStart() {
-    // It is initially assumed that the user is not dragging
+    // initially it's assumed that the user is not dragging
     this.updateState({
       type: actionTypes.SET_IS_DRAGGING,
       value: false
@@ -167,7 +159,7 @@ export default class SelectBox {
   }
 
   handleTouchMove() {
-    // User is dragging
+    // if touchmove fired - User is dragging
     this.updateState({
       type: actionTypes.SET_IS_DRAGGING,
       value: true
@@ -175,42 +167,46 @@ export default class SelectBox {
   }
 
   handleSelectBoxKeyEvent(e) {
-    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 32 || e.keyCode === 13) {
-      e.preventDefault(); // Disable native functionality
-    }
+
+    // Apply e.preventDefault for these keyCodes
+    this.preventDefaultForKeyCodes([13, 32, 27, 38, 40], e);
 
     switch (e.keyCode) {
     case 13: // Enter
-      e.stopPropagation(); // Do not submit form
-      return this.toggleOptionsPanel();
+      /*
+      * can close the panel when open and focussed
+      * can submit the form when closed and focussed
+      */
+      return this.enterPressed(e);
 
     case 32: // Space
+      /*
+      * can open or close the panel when focussed
+      */
       return this.toggleOptionsPanel();
 
     case 27: // Esc
+      /*
+      * remove focus from the panel when focussed
+      */
       return this.domRefs.selectBox.blur();
 
     case 38: // Up
-      this.updateState({
-        type: actionTypes.SET_SELECTED_INDEX,
-        value: this.getNextIndex('decrement')
-      });
-      // Open the options panel
-      if (this.state.isOptionsPanelOpen === false) {
-        this.toggleOptionsPanel('open');
-      }
-      return this.updateUI();
+      /*
+      * will open the options panel if closed
+      * will not decrement selection if options panel closed
+      * if panel open will decrement up the options list and update ui
+      */
+      return this.keyUpOrDownPressed('decrement');
 
     case 40: // Down
-      this.updateState({
-        type: actionTypes.SET_SELECTED_INDEX,
-        value: this.getNextIndex('increment')
-      });
-      // Open the options panel
-      if (this.state.isOptionsPanelOpen === false) {
-        this.toggleOptionsPanel('open');
-      }
-      return this.updateUI();
+      /*
+      * will open the options panel if closed
+      * will not increment selection if options panel closed
+      * if panel open will increment down the options list and update ui
+      */
+      return this.keyUpOrDownPressed('increment');
+
     }
   }
 
@@ -225,7 +221,7 @@ export default class SelectBox {
       if (e && e.target.parentNode.classList.contains('options-container')) {
         this.updateState({
           type: actionTypes.SET_SELECTED_INDEX,
-          value: this.getOptionIndex(e.target)
+          value: getDOMChildIndex(e.target)
         });
         this.updateUI();
       }
@@ -237,4 +233,34 @@ export default class SelectBox {
   handleSelectBoxBlur() {
     this.toggleOptionsPanel('close');
   }
+
+  // HANDLER HELPERS
+
+  // Disable native functionality if keyCode match
+  preventDefaultForKeyCodes(keyCodes, e) {
+    keyCodes.forEach(keyCode => {
+      if(keyCode === e.keyCode) e.preventDefault();
+    });
+  }
+
+  enterPressed(e) {
+    if (this.state.isOptionsPanelOpen === true) {
+      e.stopPropagation(); // Do not submit form
+      return this.toggleOptionsPanel('close'); // Close the panel
+    }
+    return this.domRefs.formElement.submit(); // Submit the form
+  }
+
+  keyUpOrDownPressed(type) {
+    this.updateState({
+      type: actionTypes.SET_SELECTED_INDEX,
+      value: this.getNextIndex(type)
+    });
+    // Open the options panel
+    if (this.state.isOptionsPanelOpen === false) {
+      this.toggleOptionsPanel('open');
+    }
+    return this.updateUI();
+  }
+
 }
