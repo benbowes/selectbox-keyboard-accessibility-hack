@@ -1,25 +1,24 @@
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+
 module.exports = {
   devServer: {
     inline: true
   },
   devtool: 'eval',
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js'
+  },
   output: {
     path: './dist/',
-    filename: 'index.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [{
-      test: /src\/.*\.js?$/,
+      test: /src\/.*\.js/,
       loader: 'babel'
-    },
-    {
-      test: /src\/.*\.s?css$/,
-      loader: [
-        'style',
-        'css?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]',
-        'sass'
-      ].join('!')
     }]
-  }
+  },
+  plugins: [
+    new CommonsChunkPlugin('SelectBox.js', ['SelectBox'])
+  ]
 };
